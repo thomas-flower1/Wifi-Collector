@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 
 #define MAX 80
+#define ARRAY_SIZE 100
 
 int quit() {
     // asks the user if they want to quit
@@ -25,6 +27,51 @@ int quit() {
 
     }
     
+}
+
+
+void collect() {
+
+    char user_input[MAX];
+    char arr[ARRAY_SIZE][MAX];
+    int index = 0;
+
+
+    for(;;) {
+
+        printf("What cell do you want to collect? (1-21): ");
+        fgets(user_input, MAX, stdin);
+
+        int choice = atoi(user_input);
+        
+        // checking if the choice is valid
+        if (choice >= 1 && choice <= 21) {
+            
+
+            // getting the filename
+            char filename[MAX] = "info_cell_";
+            strcat(filename, user_input);
+            strcat(filename, ".txt");
+            
+            // printing the message
+            printf("Network read from %s (added to position %d of the array)", filename, index);
+
+            index ++;
+
+
+
+
+
+
+
+          
+
+        }
+
+
+
+
+    }
 }
 
 
@@ -73,6 +120,7 @@ int main() {
                 break;
 
                 case 2:
+                    collect();
 
 
                 break;
