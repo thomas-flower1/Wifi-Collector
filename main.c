@@ -35,14 +35,14 @@ char* split(char string[MAX], char separator) {
 
     for(int i = 0; i < strlen(string); i++) {
        
-      
-
-        if(string[i] == separator || set) {
+      if(string[i] == separator) {
             set = 1; // true
+        
+        } else if (set) {
             second_half[index] = string[i];
             index ++;
-
         }
+
 
     }
 
@@ -79,8 +79,8 @@ int quit() {
 void collect() {
 
     char user_input[MAX];
-    char arr[ARRAY_SIZE][MAX];
-    static int index = 0; // want this to be a kind of global variable
+    Cell arr[ARRAY_SIZE];
+    static int arr_index = 0; // want this to be a kind of global variable
 
 
     for(;;) {
@@ -104,9 +104,9 @@ void collect() {
             strcat(filename, ".txt");
             
             // printing the message
-            printf("Network read from %s (added to position %d of the array)\n", filename, index);
+            printf("Network read from %s (added to position %d of the array)\n", filename, arr_index);
 
-            index ++;
+          
 
 
             // dealing with the file
@@ -123,8 +123,9 @@ void collect() {
             char current_line[MAX];
             int line_number = 1;
 
-            Cell current_cell;
+            
             while(fgets(current_line, MAX, rf) != NULL) {
+                Cell current_cell = arr[arr_index];
 
                 // really didn't like this solution, if seek worked like python would've been easier
                 switch (line_number)
@@ -134,48 +135,106 @@ void collect() {
                     char *cell_num = split(current_line, ' '); // should return the number
                     int i_cell_num = atoi(cell_num);
 
-                    printf("%d\n", i_cell_num);
+                   
                     current_cell.cell_number = i_cell_num;
+                  
 
 
                     
                     break;
                 case 2:
 
+
                     // for the address we again can look split on the whitespace
                     char *address = split(current_line, ' ');
-
-                    strcpy(current_cell.address, address);
-                    printf("%s\n", current_cell.address);
-                    
+                    strcpy(current_cell.address, address); // this may have a newline char at the end
                     break;
                 
                 case 3:
-                    /* code */
+                    // ESSID - split on the " but also need to get rid of the last char
+                    current_line[strlen(current_line-1)] = "\0";
+                    printf("%s\n", current_line);
+
+
+                    char *essid = split(current_line, '"');
+
+
+                    strcpy(current_cell.ESSID, essid);
+
                     break;
                 
                 case 4:
-                    /* code */
+                    // master, split on the :
+                    char *mode = split(current_line, ':');
+                    strcpy(current_cell.mode, mode);
+    
+
                     break;
                 
                 case 5:
-                    /* code */
+                    // the channel
+                    char *channel = split(current_line, ':');
+                    int i_channel = atoi(channel);
+                    current_cell.channel = i_channel;
+
+
                     break;
                 
                 case 6:
-                    /* code */
+                    // the encryption key
+                    char *encryption_key = split(current_line, ':');
+                    strcpy(current_cell.encryption_key, encryption_key);
+
+                   
                     break;
                 
                 case 7:
-                    /* code */
+                    // quality 
+                    char *quality = split(current_line, '='); // will return a string like 50/90
+                    char first_num[2];
+                    char second_num[2];
+                    for (int i = 0; i < 2; i++) {
+                        first_num[i] = quality[i];
+                        second_num[i] = quality[i+3];
+                    }  
+
+                    int first = atoi(first_num);
+                    int second = atoi(second_num);
+                    
                     break;
                 
                 case 8:
-                    /* code */
+                    // frequency
+                    char *frequency = split(current_line, ':');
+                    char f[5];
+                    for (int i = 0; i < 5; i++){
+                        f[i] = frequency[i];
+
+                    }
+
+                    float freq = atof(f);
+                    current_cell.frequency = freq;
+
+                  
                     break;
                 
                 case 9:
-                    /* code */
+                    // the signal level
+                    char *signal = split(current_line, '=');
+                    // then we only want the first 3 chars
+                    char sig[3];
+
+                    for(int i = 0; i < 3; i++){
+                        sig[i] = signal[i];
+                    }
+
+                    float s = atof(sig);
+
+
+
+
+
+
                     break;
                 
                 default:
@@ -184,18 +243,22 @@ void collect() {
                
                 line_number ++;
                 
-                if (line_number == 9) {
+                if (line_number == 10) {
                     // reset the index and also add the cell to the array
                     line_number = 1;
+                    arr_index++;
+
+                    
                 }
-                
-              
 
-
+                // printf("%s\n", current_cell.address);
 
 
             }
 
+        printf("%d", arr[0].cell_number);
+
+    
             
 
 
@@ -227,7 +290,7 @@ int main() {
         printf("[2025] SUCEM S.L. Wifi Collector\n\n");
 
         printf("[1] wificollector_quit\n");
-        printf("[2] wificollector_collect");
+        printf("[2] wificollector_collect\n");
         printf("[3] wificollector_show_data_one_network\n");
         printf("[4] wificollector_select_best\n");
         printf("[5] wificollector_delete_net\n");
