@@ -117,6 +117,9 @@ void collect() {
             char current_line[MAX];
             int line_number = 1;
 
+            // using this to keep track of what cells were just added and hence what we need to display to the console
+            int start_index = arr_index; 
+            int end_index = 0;
 
             while(fgets(current_line, MAX, rf) != NULL) {
 
@@ -226,12 +229,16 @@ void collect() {
         }
 
             fclose(rf);
+            end_index = arr_index;
 
             // then now we need to print and format these cells
-            Cell cell = arr[0];
-            printf("id=[%d] mac=[%s] essid=[\"%s\"] mode=[3 (%s)] channel=[%d] key=[0 (%s)] q=[n1=%d n2=%d]\n", cell.cell_number, cell.address, cell.ESSID, cell.mode, cell.channel, cell.encryption_key, cell.quality_1, cell.quality_2);
+            for(int cell_index = start_index; cell_index < end_index; cell_index++) {
+                Cell cell = arr[cell_index];
+                printf("id=[%d] mac=[%s] essid=[\"%s\"] mode=[3 (%s)] channel=[%d] key=[0 (%s)] q=[n1=%d n2=%d]\n", cell.cell_number, cell.address, cell.ESSID, cell.mode, cell.channel, cell.encryption_key, cell.quality_1, cell.quality_2);
+            }
 
 
+            // TODO this last part of the function
             // once this is done we need to ask if the user want to add another prompt
             char access_point[MAX];
             printf("Do you want to add another access point? [y:N]: ");
