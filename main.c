@@ -49,7 +49,6 @@ char* split(char string[MAX], char separator) {
 }
 
 
-
 int quit() {
     // asks the user if they want to quit
 
@@ -72,19 +71,26 @@ int quit() {
     
 }
 
+char *get_user_input(char *message) {
+    /* function that displays a message and returns a string of the user's input*/
+    static char user_input[MAX];
+    user_input[0] = '\0'; // just clear it every time
+    printf("%s", message);
+    fgets(user_input, MAX, stdin);
+    return user_input;
+
+
+}
+
 
 void collect() {
 
-    Cell arr[ARRAY_SIZE];
-    char user_input[MAX];
+    static Cell arr[ARRAY_SIZE]; // an array that will hold all the cells
     static int arr_index = 0; // want this to be a kind of global variable
-
 
     for(;;) {
 
-        printf("What cell do you want to collect? (1-21): ");
-        fgets(user_input, MAX, stdin);
-
+        char *user_input = get_user_input("What cell do you want to collect? (1-21): ");
         int choice = atoi(user_input);
         
         // checking if the choice is valid
@@ -93,7 +99,6 @@ void collect() {
             // convert the number to a string
             char user_number[MAX];
             sprintf(user_number, "%d", choice);
-
 
             // getting the filename
             char filename[MAX] = "cells/info_cell_";
@@ -124,6 +129,7 @@ void collect() {
             while(fgets(current_line, MAX, rf) != NULL) {
 
                 // really didn't like this solution, if seek worked like python would've been easier
+                // hide all this in a function later
                 switch (line_number) {
                     case 1:
                         // case when it is just the cell name, need to extract the number
@@ -234,15 +240,21 @@ void collect() {
             // then now we need to print and format these cells
             for(int cell_index = start_index; cell_index < end_index; cell_index++) {
                 Cell cell = arr[cell_index];
-                printf("id=[%d] mac=[%s] essid=[\"%s\"] mode=[3 (%s)] channel=[%d] key=[0 (%s)] q=[n1=%d n2=%d]\n", cell.cell_number, cell.address, cell.ESSID, cell.mode, cell.channel, cell.encryption_key, cell.quality_1, cell.quality_2);
+                printf("id=[%d] mac=[%s] essid=[\"%s\"] mode=[3 (%s)] channel=[%d] key=[0 (%s)] q=[n1=%d n2=%d]\n\n", cell.cell_number, cell.address, cell.ESSID, cell.mode, cell.channel, cell.encryption_key, cell.quality_1, cell.quality_2);
             }
 
 
-            // TODO this last part of the function
-            // once this is done we need to ask if the user want to add another prompt
             char access_point[MAX];
             printf("Do you want to add another access point? [y:N]: ");
             fgets(access_point, MAX, stdin);
+
+            char selection = access_point[0];
+            // then check for what character they selected
+            if (selection == 'n') {
+                return;
+
+            }
+
 
 
     
