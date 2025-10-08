@@ -1,0 +1,49 @@
+#ifndef CELL_H
+#define CELL_H
+
+#define MAX 80
+#define ARRAY_SIZE 100
+
+typedef enum {
+    Auto,
+    Ad_Hoc,
+    Managed,
+    Master,
+    Repeater,
+    Secondary,
+    Monitor,
+    Unknown
+
+} Mode;
+
+
+typedef enum {
+    off,
+    on
+
+} Encryption_key;
+
+typedef struct {
+    int first;
+    int second;
+
+} Quality;
+
+typedef struct {
+    int id;
+    char address[MAX];
+    char ESSID[MAX];
+    Mode mode;
+    int channel;
+    Encryption_key encryption_key;  // could make an enum
+    Quality quality;
+    double frequency;
+    int signal_level;
+
+} Cell;
+
+
+void print_cell(Cell *cell);
+Mode string_to_mode(char *mode);
+
+#endif
