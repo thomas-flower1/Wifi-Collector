@@ -3,7 +3,7 @@
 
 
 #define MAX 80
-#define ARRAY_SIZE 100 // NEED TO CHECK THIS
+#define ARRAY_SIZE 200 
 
 int quit();
 void collect();

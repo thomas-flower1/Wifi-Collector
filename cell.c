@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-
-
 #include "cell.h"
 
 
@@ -37,23 +33,41 @@ Mode string_to_mode(char *mode) {
         return Managed;
     } else if(strcmp(mode, "Master")) {
         return Master;
-    } else {
+    } else if(strcmp(mode, "Repeater")){
+        return Repeater;
+    } else if(strcmp(mode, "Secondary")) {
+        return Secondary;
+    } else if(strcmp(mode, "Monitor")) {
+        return Monitor;
+    } else if(strcmp(mode, "Unknown")) {
+        return Unknown;
+    }
+    
+    else {
         return Auto;
     }
-
-
 }
 
 char* encryption_key_to_string(Encryption_key ek) {
-    switch (ek)
-    {
-    case 1:
-    return "on";
-        
-    default:
-        return "off";
+    switch (ek){
+        case 1:
+            return "on";
+            
+        default:
+            return "off";
     }
 }
+
+
+Encryption_key string_to_encryption_key(char *ek){
+    if(strcmp(ek, "on")) {
+        return on;
+    } else {
+        return off;
+    }
+}
+
+
 
 void print_cell(Cell *cell) {
 

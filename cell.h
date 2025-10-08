@@ -1,8 +1,16 @@
 #ifndef CELL_H
 #define CELL_H
 
-#define MAX 80
-#define ARRAY_SIZE 100
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+
+
+#include "main_functions.h"
+#include "helper_functions.h"
+
+
 
 typedef enum {
     Auto,
@@ -45,5 +53,8 @@ typedef struct {
 
 void print_cell(Cell *cell);
 Mode string_to_mode(char *mode);
+
+char* encryption_key_to_string(Encryption_key ek);
+Encryption_key string_to_encryption_key(char *ek);
 
 #endif

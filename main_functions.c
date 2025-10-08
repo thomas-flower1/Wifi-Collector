@@ -31,64 +31,7 @@ int quit() {
     
 }
 
-void collect() {
-
-    static Cell arr[ARRAY_SIZE]; // an array that will hold all the cells
-    static int arr_index = 0; // want this to be a kind of global variable
-
-    for(;;) {
-
-        char *user_input = get_user_input("What cell do you want to collect? (1-21): ");
-        int choice = atoi(user_input);
-        
-        // checking if the choice is valid
-        if (choice >= 1 && choice <= 21) {
-            
-            // convert the number to a string
-            char user_number[MAX];
-            sprintf(user_number, "%d", choice);
-
-            // getting the filename
-            char filename[MAX] = "cells/info_cell_";
-            strcat(filename, user_number);
-            strcat(filename, ".txt");
-            
-            // printing the message
-            printf("Network read from %s (added to position %d of the array)\n", filename, arr_index);
-
-           
-
-            
-
-            // // then now we need to print and format these cells
-            // for(int cell_index = start_index; cell_index < end_index; cell_index++) {
-            //     Cell cell = arr[cell_index];
-            //     printf("id=[%d] mac=[%s] essid=[\"%s\"] mode=[3 (%s)] channel=[%d] key=[0 (%s)] q=[n1=%d n2=%d]\n\n", cell.cell_number, cell.address, cell.ESSID, cell.mode, cell.channel, cell.encryption_key, cell.quality_1, cell.quality_2);
-            // }
-
-
-            // char access_point[MAX];
-            // printf("Do you want to add another access point? [y:N]: ");
-            // fgets(access_point, MAX, stdin);
-
-            // char selection = access_point[0];
-            // // then check for what character they selected
-            // if (selection == 'n') {
-            //     return;
-
-            // }
-
-
-
-    
-        }
-          
-    }
-
-}
-
-
-void create_cells_from_file(char *filename, Cell *array, int arr_index) {
+void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
     /*
     A function that reads a cell file and creates cell objects and adds them to an array
 
@@ -117,7 +60,6 @@ void create_cells_from_file(char *filename, Cell *array, int arr_index) {
     int line_number = 1; // will go from 1-9
 
     // using this to keep track of what cells were just added and hence what we need to display to the console
-    int start_index = arr_index; 
     int end_index = -1;
 
     while(fgets(current_line, MAX, rf) != NULL) {
@@ -149,63 +91,61 @@ void create_cells_from_file(char *filename, Cell *array, int arr_index) {
                 current_cell.mode = string_to_mode(mode);
                 break;
             
-            // case 5:
-            //     char *channel = split(current_line, ':');
-            //     int i_channel = atoi(channel);
-            //     current_cell.channel = i_channel;
-            //     break;
+            case 5:
+                char *channel = split(current_line, ':');
+                int i_channel = atoi(channel);
+                current_cell.channel = i_channel;
+                break;
             
-            // case 6:
-            //     // the encryption key
-            //     char *encryption_key = split(current_line, ':');
-            //     encryption_key[strlen(encryption_key)-1] = '\0'; // get rid of the newline character
-            //     strcpy(current_cell.encryption_key, encryption_key);
-            //     break;
+            case 6:
+                // the encryption key
+                char *encryption_key = split(current_line, ':');
+                encryption_key[strlen(encryption_key)-1] = '\0'; // get rid of the newline character
+                current_cell.encryption_key = string_to_encryption_key(encryption_key);
+                break;
             
-            // case 7:
-            //     // quality 
-            //     char *quality = split(current_line, '='); // will return a string like 50/90
-            //     quality[strlen(quality)-1] = '\0'; // get rid of the newline character
+            case 7:
+                // quality 
+                char *quality = split(current_line, '='); // will return a string like 50/90
+                quality[strlen(quality)-1] = '\0'; // get rid of the newline character
             
-            //     char first_num[3]; // need 3 for the null terminating char
-            //     char second_num[3];
-            //     for (int i = 0; i < 2; i++) {
-            //         first_num[i] = quality[i];
-            //         second_num[i] = quality[i+3];
-            //     }  
+                char first_num[3]; // need 3 for the null terminating char
+                char second_num[3];
+                for (int i = 0; i < 2; i++) {
+                    first_num[i] = quality[i];
+                    second_num[i] = quality[i+3];
+                }  
 
-            //     int first = atoi(first_num);
-            //     int second = atoi(second_num);
+                int first = atoi(first_num);
+                int second = atoi(second_num);
 
-
-            //     current_cell.quality_1 = first;
-            //     current_cell.quality_2 = second;
-                
-            //     break;
+                current_cell.quality.first = first;
+                current_cell.quality.second = second;
+                break;
             
-            // case 8:
-            //     char *frequency = split(current_line, ':');
-            //     char f[6];
-            //     for (int i = 0; i < 5; i++){
-            //         f[i] = frequency[i];
+            case 8:
+                char *frequency = split(current_line, ':');
+                char f[6];
+                for (int i = 0; i < 5; i++){
+                    f[i] = frequency[i];
 
-            //     }
-            //     float freq = atof(f);
-            //     current_cell.frequency = freq;
-            //     break;
+                }
+                float freq = atof(f);
+                current_cell.frequency = freq;
+                break;
             
-            // case 9:
-            //     // the signal level
-            //     char *signal = split(current_line, '=');
+            case 9:
+                // the signal level
+                char *signal = split(current_line, '=');
 
-            //     char sig[4];
-            //     for(int i = 0; i < 3; i++){
-            //         sig[i] = signal[i];
-            //     }
+                char sig[4];
+                for(int i = 0; i < 3; i++){
+                    sig[i] = signal[i];
+                }
 
-            //     sig[3] = '\0';
-            //     int s = atoi(sig);
-            //     current_cell.signal_level = s;
+                sig[3] = '\0';
+                int s = atoi(sig);
+                current_cell.signal_level = s;
             default:
                 break;
         }
@@ -213,22 +153,70 @@ void create_cells_from_file(char *filename, Cell *array, int arr_index) {
 
         // if we have finished with the cell in the file
         if (line_number == 9) {
-            array[arr_index] = current_cell; // add to the list
+            array[*arr_index] = current_cell; // add to the list
             current_cell = (Cell){0}; // reset the cell
             line_number = 1; // reset the cell line
-            arr_index++; // increment the index of the arr of cells
+            (*arr_index)++; // increment the index of the arr of cells
 
-            
         }  else {
             line_number ++;
         }
 
 
     }
-
         fclose(rf);
-        end_index = arr_index;
 }
+
+void collect(Cell *array, int *array_index) {
+    for(;;) {
+
+        char *user_input = get_user_input("What cell do you want to collect? (1-21): ");
+        int choice = atoi(user_input);
+        
+        // checking if the choice is valid
+        if (choice >= 1 && choice <= 21) {
+            
+            // convert the number to a string
+            char user_number[MAX];
+            sprintf(user_number, "%d", choice);
+
+            // getting the filename
+            char filename[MAX] = "cells/info_cell_";
+            strcat(filename, user_number);
+            strcat(filename, ".txt");
+
+            int start_index = *array_index;
+            create_cells_from_file(filename, array, array_index);
+            
+            
+            // then now we need to print and format these cells
+            for(int cell_index = start_index; cell_index < *array_index; cell_index++) {
+                printf("Network read from %s (added to position %d of the array)\n", filename, cell_index);
+                Cell cell = array[cell_index];
+                print_cell(&cell);
+                printf("\n");
+            }
+            char access_point[MAX];
+            printf("Do you want to add another access point? [y:N]: ");
+            fgets(access_point, MAX, stdin);
+
+            char selection = access_point[0];
+            // then check for what character they selected
+            if (selection == 'n') {
+                return;
+
+            }
+
+
+
+    
+        }
+          
+    }
+
+}
+
+
 
 void main_display() {
 
@@ -251,9 +239,12 @@ void main_display() {
 
 int main() {
 
-    Cell array[100];
-    create_cells_from_file("cells/info_cell_9.txt", array, 0);
-    printf("%d\n", array[1].mode);
+    // Cell array[ARRAY_SIZE];
+    // int arr_index  = 0;
+    // // create_cells_from_file("cells/info_cell_9.txt", array, &arr_index);
+    // collect(array, &arr_index);
+
+    
 
 
     return 0;
