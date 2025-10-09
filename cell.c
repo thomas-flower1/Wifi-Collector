@@ -1,5 +1,9 @@
-#include "cell.h"
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
+#include "cell.h"
 
 char* mode_to_string(Mode mode){
     // given a number will return the string that the mode is associated with

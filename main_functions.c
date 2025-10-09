@@ -3,10 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 #include "main_functions.h"
 #include "helper_functions.h"
-#include "cell.h"
 
 
 int quit() {
@@ -236,16 +234,11 @@ void main_display() {
 
 }
 
+void display_all(Cell *array, int array_index) {
+    // function that displays all the cells in the 
+    for(int i = 0; i < array_index; i++) {
+        print_cell(&array[i]);
 
-int main() {
-
-    // Cell array[ARRAY_SIZE];
-    // int arr_index  = 0;
-    // // create_cells_from_file("cells/info_cell_9.txt", array, &arr_index);
-    // collect(array, &arr_index);
-
-    
-
-
-    return 0;
+    }
 }
+

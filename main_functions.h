@@ -2,11 +2,11 @@
 #define MAIN_FUNCTIONS_H
 
 
-#define MAX 80
-#define ARRAY_SIZE 200 
+#include "cell.h"
 
 int quit();
 void collect();
 void main_display();
+void display_all(Cell *array, int array_index);
 
 #endif

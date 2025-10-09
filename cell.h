@@ -1,16 +1,8 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-#include <stdlib.h>
-
-
-#include "main_functions.h"
-#include "helper_functions.h"
-
-
+#define MAX 80
+#define ARRAY_SIZE 200 
 
 typedef enum {
     Auto,
