@@ -8,5 +8,6 @@ int quit();
 void collect();
 void main_display();
 void display_all(Cell *array, int array_index);
+void display(Cell *array);
 
 #endif

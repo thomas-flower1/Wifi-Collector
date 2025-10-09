@@ -40,6 +40,11 @@ int main() {
             break;
 
 
+            case 9:
+                display(array);
+            break;
+
+
             case 10:
                 display_all(array, index);
             break;

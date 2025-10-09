@@ -12,17 +12,11 @@ int quit() {
 
     char user_input[MAX];
     for(;;) {
-        printf("Are you sure you want to exit? [y/n]: ");
-
-        fgets(user_input, MAX, stdin);
-
-        char choice = toupper(user_input[0]);
-        if (choice == 'Y') {
-            return 1; // true
-
-        } else if (choice == 'N') {
+        char *user_input = get_user_input("Are ypu sure you want to exit? [y/N]: ");
+        if(tolower(user_input[0]) == 'n') {
             return 0;
-
+        } else{
+            return 1;
         }
 
     }
@@ -194,19 +188,12 @@ void collect(Cell *array, int *array_index) {
                 print_cell(&cell);
                 printf("\n");
             }
-            char access_point[MAX];
-            printf("Do you want to add another access point? [y:N]: ");
-            fgets(access_point, MAX, stdin);
 
-            char selection = access_point[0];
-            // then check for what character they selected
-            if (selection == 'n') {
+
+            strcpy(user_input, get_user_input("Do you want to add another access point? [y:N]: "));
+            if(tolower(user_input[0]) == 'n') {
                 return;
-
             }
-
-
-
     
         }
           
@@ -242,3 +229,31 @@ void display_all(Cell *array, int array_index) {
     }
 }
 
+void display(Cell *array) {
+
+    for (;;) {
+    // given the array will ask the user for input and use linear search to find any matches
+        char *user_input = get_user_input("Indicate the number of the cell for which you want to know its information (1 - 21): ");
+        int choice = atoi(user_input);
+        
+        for(int i = 0; i < ARRAY_SIZE; i++) { // was struggling to get the size of the array using sizeof - can just use array size - both O(N) anyways
+            Cell current_cell = array[i];
+            if (current_cell.id == choice) {
+                print_cell(&current_cell);
+            }
+
+            
+        }
+
+        // ask the user if they want to quit or not
+        strcpy(user_input, get_user_input("Do you want to print the information of another cell? [y/N]: "));
+        if(tolower(user_input[0]) == 'n') {
+            return;
+        }
+
+
+    }
+
+
+   
+}
