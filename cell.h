@@ -18,9 +18,8 @@ typedef enum {
 
 
 typedef enum {
-    off,
-    on
-
+   ON,
+   OFF
 } Encryption_key;
 
 typedef struct {
