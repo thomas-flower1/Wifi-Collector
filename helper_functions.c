@@ -80,6 +80,8 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
             case 7:
                 char *quality = split(current_line, '='); // will return a string like 50/90
                 quality[strlen(quality)-1] = '\0'; // get rid of the newline character
+
+               
             
                 char first_num[3]; // need 3 for the null terminating char
                 char second_num[3];
@@ -87,6 +89,10 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
                     first_num[i] = quality[i];
                     second_num[i] = quality[i+3];
                 }  
+
+
+                first_num[2] = '\0';
+                second_num[2] = '\0';
 
                 int first = atoi(first_num);
                 int second = atoi(second_num);
