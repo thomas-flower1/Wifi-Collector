@@ -56,6 +56,9 @@ char* encryption_key_to_string(Encryption_key ek) {
     switch (ek){
         case 0:
             return "on";
+        
+        case 1:
+            return "off";
             
         default:
             return "off";
@@ -64,7 +67,7 @@ char* encryption_key_to_string(Encryption_key ek) {
 
 
 Encryption_key string_to_encryption_key(char *ek){
-    if(strcmp(ek, "on")) {
+    if(strcmp(ek, "on") == 0) {
         return ON;
     } else {
         return OFF;

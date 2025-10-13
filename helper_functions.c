@@ -74,6 +74,7 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
             
             case 6:
                 char *encryption_key = split(current_line, ':');
+                encryption_key[strlen(encryption_key) - 1] = '\0';
                 current_cell.encryption_key = string_to_encryption_key(encryption_key);
                 break;
             

@@ -123,6 +123,8 @@ void collect(Cell *array, int *array_index) {
             if(tolower(user_input[0]) == 'n') {
                 return;
             }
+
+            printf("\n");
     
         }
           
