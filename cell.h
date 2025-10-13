@@ -5,14 +5,14 @@
 #define ARRAY_SIZE 200 
 
 typedef enum {
-    Auto,
-    Ad_Hoc,
-    Managed,
-    Master,
-    Repeater,
-    Secondary,
-    Monitor,
-    Unknown
+    AUTO,
+    AD_HOC,
+    MANAGED,
+    MASTER,
+    REPEATER,
+    SECONDARY,
+    MONITOR,
+    UNKNOWN
 
 } Mode;
 
@@ -21,6 +21,7 @@ typedef enum {
    ON,
    OFF
 } Encryption_key;
+
 
 typedef struct {
     int first;

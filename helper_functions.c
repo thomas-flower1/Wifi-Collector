@@ -73,13 +73,11 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
                 break;
             
             case 6:
-                // the encryption key
                 char *encryption_key = split(current_line, ':');
                 current_cell.encryption_key = string_to_encryption_key(encryption_key);
                 break;
             
             case 7:
-                // quality 
                 char *quality = split(current_line, '='); // will return a string like 50/90
                 quality[strlen(quality)-1] = '\0'; // get rid of the newline character
             
@@ -147,6 +145,7 @@ char* split(char *string, char separator) {
     int set = 0;
     
     static char second_half[MAX];
+    second_half[0] = '\0';
     
     for(int i = 0; i < strlen(string); i++) {
        

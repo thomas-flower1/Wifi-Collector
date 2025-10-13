@@ -31,24 +31,24 @@ char* mode_to_string(Mode mode){
 }
 
 Mode string_to_mode(char *mode) {
-    if (strcmp(mode, "Ad-Hoc")) {
-        return Ad_Hoc;
-    } else if(strcmp(mode, "Managed")) {
-        return Managed;
-    } else if(strcmp(mode, "Master")) {
-        return Master;
-    } else if(strcmp(mode, "Repeater")){
-        return Repeater;
-    } else if(strcmp(mode, "Secondary")) {
-        return Secondary;
-    } else if(strcmp(mode, "Monitor")) {
-        return Monitor;
-    } else if(strcmp(mode, "Unknown")) {
-        return Unknown;
+    if (strcmp(mode, "Ad-Hoc") == 0) {
+        return AD_HOC;
+    } else if(strcmp(mode, "Managed") == 0) {
+        return MANAGED;
+    } else if(strcmp(mode, "Master") == 0) {
+        return MASTER;
+    } else if(strcmp(mode, "Repeater")== 0){
+        return REPEATER;
+    } else if(strcmp(mode, "Secondary") == 0) {
+        return SECONDARY;
+    } else if(strcmp(mode, "Monitor") == 0) {
+        return MONITOR;
+    } else if(strcmp(mode, "Unknown")== 0) {
+        return UNKNOWN;
     }
     
     else {
-        return Auto;
+        return AUTO;
     }
 }
 
