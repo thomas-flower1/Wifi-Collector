@@ -8,18 +8,23 @@
 #include "cell.h"
 
 
-
 int main() {
 
-    Cell array[ARRAY_SIZE];
-    int index = 0;
+    Cell array[ARRAY_SIZE]; // the array that will hold all the cells
+    int index = 0; // the next available index we can use to insert a cell
 
     // the main loop
     for(;;) {
-        main_display(); // printing the menu prompts to the user
+
+
+        // display the main message
+        main_display(); 
+
+        // getting the user input
         char *user_input = get_user_input("Option: ");
         int choice = atoi(user_input); // convert the input to a number
-        
+
+        printf("\n");
         
         switch(choice) {
             case 1:
@@ -36,6 +41,27 @@ int main() {
 
             case 2:
                 collect(array, &index);
+
+            break;
+
+            case 4:
+
+            break;
+
+            case 5:
+
+            break;
+
+
+            case 6:
+
+            break;
+
+            case 7:
+
+            break;
+
+            case 8:
 
             break;
 
@@ -59,8 +85,6 @@ int main() {
 
       
     }
-
-
    
     return 0;
 }

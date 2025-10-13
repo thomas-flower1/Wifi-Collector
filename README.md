@@ -1,6 +1,8 @@
 Systems Architecture project for uc3m
 
-First assignment submission for the "Wifi Collector" Project
+First assignment submission for the "Wifi Collector" Project. 
+
+Group: Thomas Flowers, Jackson Strauss
 
 The project assumes that the file tree looks like this:
 
@@ -38,4 +40,16 @@ Wifi_Collector
 ├── output_file
 └── README.md
 
-It can be compiled using "make".
+
+Files
+main - contains the main loop and calls the main functions
+main_functions - contains the implementations of quit, collect, display, display_all
+helper_functions - contains functions to help the main functions
+cell - contains the cell class and methods associated with it
+
+
+It can be compiled using 'make' and executed using './main' or alternatively using 'make run' to compile and run. 
+
+
+The project can also be seen on my GitHub: https://github.com/thomas-flower1/Wifi-Collector
+

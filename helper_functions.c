@@ -6,6 +6,141 @@
 #include "helper_functions.h"
 #include "cell.h"
 
+void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
+    /*
+    A function that reads a cell file and creates cell objects and adds them to an array
+
+    Args:
+    filename: string name of the file to read from
+    array: an array that will hold the cells
+    arr_index: the next empty index in which we want to add the cell into
+
+    Returns:
+
+    n/a
+    
+    */
+
+    // dealing with the file
+    FILE *rf = fopen(filename, "r"); 
+
+    // if file doesn't exist just return
+    if (rf == NULL){
+        return;
+    }
+
+    // then we want to read from the given file
+    Cell current_cell;
+    char current_line[MAX]; // current line we are reading
+    int line_number = 1; // will go from 1-9
+
+    // using this to keep track of what cells were just added and hence what we need to display to the console
+    int end_index = -1;
+
+    while(fgets(current_line, MAX, rf) != NULL) {
+     
+        switch (line_number) {
+            case 1:
+                // case when it is just the cell name, need to extract the number
+                char *cell_num = split(current_line, ' '); // should return the number
+                int i_cell_num = atoi(cell_num);
+                current_cell.id = i_cell_num;
+
+                break;
+
+            case 2:
+                char *address = split(current_line, ' ');
+                address[strlen(address)-1] = '\0'; // get rid of the newline character
+                strcpy(current_cell.address, address); 
+                break;
+            
+            case 3:
+                char *essid = split(current_line, '"');
+                essid[strlen(essid)-1] = '\0'; // get rid of the newline character
+                strcpy(current_cell.ESSID, essid);
+                break;
+            
+            case 4:
+                char *mode = split(current_line, ':');
+                mode[strlen(mode)-1] = '\0'; // get rid of the newline character
+                current_cell.mode = string_to_mode(mode);
+                break;
+            
+            case 5:
+                char *channel = split(current_line, ':');
+                int i_channel = atoi(channel);
+                current_cell.channel = i_channel;
+                break;
+            
+            case 6:
+                // the encryption key
+                char *encryption_key = split(current_line, ':');
+                current_cell.encryption_key = string_to_encryption_key(encryption_key);
+                break;
+            
+            case 7:
+                // quality 
+                char *quality = split(current_line, '='); // will return a string like 50/90
+                quality[strlen(quality)-1] = '\0'; // get rid of the newline character
+            
+                char first_num[3]; // need 3 for the null terminating char
+                char second_num[3];
+                for (int i = 0; i < 2; i++) {
+                    first_num[i] = quality[i];
+                    second_num[i] = quality[i+3];
+                }  
+
+                int first = atoi(first_num);
+                int second = atoi(second_num);
+
+                current_cell.quality.first = first;
+                current_cell.quality.second = second;
+                break;
+            
+            case 8:
+                char *frequency = split(current_line, ':');
+                char f[6];
+                for (int i = 0; i < 5; i++){
+                    f[i] = frequency[i];
+
+                }
+                float freq = atof(f);
+                current_cell.frequency = freq;
+                break;
+            
+            case 9:
+                // the signal level
+                char *signal = split(current_line, '=');
+
+                char sig[4];
+                for(int i = 0; i < 3; i++){
+                    sig[i] = signal[i];
+                }
+
+                sig[3] = '\0';
+                int s = atoi(sig);
+                current_cell.signal_level = s;
+            default:
+                break;
+        }
+
+
+        // if we have finished with the cell in the file
+        if (line_number == 9) {
+            array[*arr_index] = current_cell; // add to the list
+            current_cell = (Cell){0}; // reset the cell
+            line_number = 1; // reset the cell line
+            (*arr_index)++; // increment the index of the arr of cells
+
+        }  else {
+            line_number ++;
+        }
+
+
+    }
+        fclose(rf);
+}
+
 char* split(char *string, char separator) {
 
     int index = 0;

@@ -7,8 +7,55 @@
 #include "helper_functions.h"
 
 
+/*
+File that contains all the main functions for the Wifi Collector lab project
+
+For assignment 1 this includes:
+main_display() - a function that prints the main menu message
+quit() - a function that gets user input and asks if they want to quit the program
+collect() - a function that gets uer input and adds the specified cell into the array by reading the cells from a file
+display() - a function that, given user input, displays the cells with the matching ID
+display_all() - displays all the cells in the array
+
+*/
+
+
+void main_display() {
+    /*
+    A function that displays the main menu
+
+    Args:
+    n/a
+
+    Returns:
+    n/a
+    */
+
+    printf("[2025] SUCEM S.L. Wifi Collector\n\n");
+    printf("[1] wificollector_quit\n");
+    printf("[2] wificollector_collect\n");
+    printf("[3] wificollector_show_data_one_network\n");
+    printf("[4] wificollector_select_best\n");
+    printf("[5] wificollector_delete_net\n");
+    printf("[6] wificollector_sort\n");
+    printf("[7] wificollector_export\n");
+    printf("[8] wificollector_import\n");
+    printf("[9] wificollector_display\n");
+    printf("[10] wificollector_display_all\n\n");
+
+}
+
+
 int quit() {
-    // asks the user if they want to quit
+    /*
+    Asks the user iif they want to quit - if they want to quit return true(1) or return false(0)
+
+    Args:
+    n/a
+
+    Returns:
+    bool: integer representation of a bool representing if the user want to quit or stay in the program
+    */
 
     char user_input[MAX];
     for(;;) {
@@ -23,147 +70,28 @@ int quit() {
     
 }
 
-void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
-    /*
-    A function that reads a cell file and creates cell objects and adds them to an array
 
-    Args:
-    filename: string name of the file to read from
-    array: an array that will hold the cells
-    arr_index: the next empty index in which we want to add the cell into
-
-    Returns:
-
-    n/a
-    
-    */
-
-    // dealing with the file
-    FILE *rf = fopen(filename, "r"); 
-
-    // if file doesn't exist just return
-    if (rf == NULL){
-        return;
-    }
-
-    // then we want to read from the given file
-    Cell current_cell;
-    char current_line[MAX]; // current line we are reading
-    int line_number = 1; // will go from 1-9
-
-    // using this to keep track of what cells were just added and hence what we need to display to the console
-    int end_index = -1;
-
-    while(fgets(current_line, MAX, rf) != NULL) {
-     
-        switch (line_number) {
-            case 1:
-                // case when it is just the cell name, need to extract the number
-                char *cell_num = split(current_line, ' '); // should return the number
-                int i_cell_num = atoi(cell_num);
-                current_cell.id = i_cell_num;
-
-                break;
-
-            case 2:
-                char *address = split(current_line, ' ');
-                address[strlen(address)-1] = '\0'; // get rid of the newline character
-                strcpy(current_cell.address, address); 
-                break;
-            
-            case 3:
-                char *essid = split(current_line, '"');
-                essid[strlen(essid)-1] = '\0'; // get rid of the newline character
-                strcpy(current_cell.ESSID, essid);
-                break;
-            
-            case 4:
-                char *mode = split(current_line, ':');
-                mode[strlen(mode)-1] = '\0'; // get rid of the newline character
-                current_cell.mode = string_to_mode(mode);
-                break;
-            
-            case 5:
-                char *channel = split(current_line, ':');
-                int i_channel = atoi(channel);
-                current_cell.channel = i_channel;
-                break;
-            
-            case 6:
-                // the encryption key
-                char *encryption_key = split(current_line, ':');
-                encryption_key[strlen(encryption_key)-1] = '\0'; // get rid of the newline character
-                current_cell.encryption_key = string_to_encryption_key(encryption_key);
-                break;
-            
-            case 7:
-                // quality 
-                char *quality = split(current_line, '='); // will return a string like 50/90
-                quality[strlen(quality)-1] = '\0'; // get rid of the newline character
-            
-                char first_num[3]; // need 3 for the null terminating char
-                char second_num[3];
-                for (int i = 0; i < 2; i++) {
-                    first_num[i] = quality[i];
-                    second_num[i] = quality[i+3];
-                }  
-
-                int first = atoi(first_num);
-                int second = atoi(second_num);
-
-                current_cell.quality.first = first;
-                current_cell.quality.second = second;
-                break;
-            
-            case 8:
-                char *frequency = split(current_line, ':');
-                char f[6];
-                for (int i = 0; i < 5; i++){
-                    f[i] = frequency[i];
-
-                }
-                float freq = atof(f);
-                current_cell.frequency = freq;
-                break;
-            
-            case 9:
-                // the signal level
-                char *signal = split(current_line, '=');
-
-                char sig[4];
-                for(int i = 0; i < 3; i++){
-                    sig[i] = signal[i];
-                }
-
-                sig[3] = '\0';
-                int s = atoi(sig);
-                current_cell.signal_level = s;
-            default:
-                break;
-        }
-
-
-        // if we have finished with the cell in the file
-        if (line_number == 9) {
-            array[*arr_index] = current_cell; // add to the list
-            current_cell = (Cell){0}; // reset the cell
-            line_number = 1; // reset the cell line
-            (*arr_index)++; // increment the index of the arr of cells
-
-        }  else {
-            line_number ++;
-        }
-
-
-    }
-        fclose(rf);
-}
 
 void collect(Cell *array, int *array_index) {
-    for(;;) {
+    /*
+    A function that takes in the cells array and the current index and inserts cells, requested by the user, into the array at the next available cell.
+    It gets the contents of these cells by reading from the specific file
 
-        char *user_input = get_user_input("What cell do you want to collect? (1-21): ");
+    Args:
+    *array: a pointer to the cells array which we want to add more cells into
+    *array_index: a pointer to the current index
+
+    Returns:
+    n/a
+    */
+
+    for(;;) {
+        
+        // getting user input
+        char *user_input = get_user_input("What cell do you want to collect? (1 - 21): ");
         int choice = atoi(user_input);
+
+        printf("\n");
         
         // checking if the choice is valid
         if (choice >= 1 && choice <= 21) {
@@ -177,6 +105,7 @@ void collect(Cell *array, int *array_index) {
             strcat(filename, user_number);
             strcat(filename, ".txt");
 
+            // extracting data from the file and insert into the array
             int start_index = *array_index;
             create_cells_from_file(filename, array, array_index);
             
@@ -189,7 +118,7 @@ void collect(Cell *array, int *array_index) {
                 printf("\n");
             }
 
-
+            // see if the user wants to add more cells
             strcpy(user_input, get_user_input("Do you want to add another access point? [y:N]: "));
             if(tolower(user_input[0]) == 'n') {
                 return;
@@ -201,48 +130,32 @@ void collect(Cell *array, int *array_index) {
 
 }
 
-
-
-void main_display() {
-
-    // function that prints the main menu to the users
-
-    printf("[2025] SUCEM S.L. Wifi Collector\n\n");
-    printf("[1] wificollector_quit\n");
-    printf("[2] wificollector_collect\n");
-    printf("[3] wificollector_show_data_one_network\n");
-    printf("[4] wificollector_select_best\n");
-    printf("[5] wificollector_delete_net\n");
-    printf("[6] wificollector_sort\n");
-    printf("[7] wificollector_export\n");
-    printf("[8] wificollector_import\n");
-    printf("[9] wificollector_display\n");
-    printf("[10] wificollector_display_all\n");
-
-}
-
-void display_all(Cell *array, int array_index) {
-    // function that displays all the cells in the 
-    for(int i = 0; i < array_index; i++) {
-        print_cell(&array[i]);
-
-    }
-}
-
 void display(Cell *array) {
+    /*
+    A function that asks the user for the integer ID of the cell they want to display. If the cell is in the array it will print the contents. 
+    If not displays nothing.
+
+    Args:
+    *array - a pointer to the cells array
+
+    Returns:
+    n/a
+    
+    */
 
     for (;;) {
-    // given the array will ask the user for input and use linear search to find any matches
+        
+        // getting user input
         char *user_input = get_user_input("Indicate the number of the cell for which you want to know its information (1 - 21): ");
         int choice = atoi(user_input);
-        
+
+        // using linear search to find the corresponding cell (if it exists) - since unordered cannot use binary search
         for(int i = 0; i < ARRAY_SIZE; i++) { // was struggling to get the size of the array using sizeof - can just use array size - both O(N) anyways
             Cell current_cell = array[i];
             if (current_cell.id == choice) {
                 print_cell(&current_cell);
             }
 
-            
         }
 
         // ask the user if they want to quit or not
@@ -251,9 +164,23 @@ void display(Cell *array) {
             return;
         }
 
+    }
+   
+}
 
+void display_all(Cell *array, int array_index) {
+    /*
+    A function that displays all the cells currently in the array
+
+    Args:
+    n/a
+
+    Returns:
+    n/a
+    */
+
+    for(int i = 0; i < array_index; i++) {
+        print_cell(&array[i]);
     }
 
-
-   
 }
