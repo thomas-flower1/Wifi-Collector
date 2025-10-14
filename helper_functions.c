@@ -8,15 +8,15 @@
 
 void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
     /*
-    A function that reads a cell file and creates cell objects and adds them to an array
+
+    A function that reads a cells from a file and creates cell objects. Once created it adds them to an array
 
     Args:
-    filename: string name of the file to read from
-    array: an array that will hold the cells
-    arr_index: the next empty index in which we want to add the cell into
+    filename : string name of the file to read from
+    array : an array that will hold the cells
+    arr_index : the next empty index in which we want to add the cell into
 
     Returns:
-
     n/a
     
     */
@@ -146,16 +146,18 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
 
 char* split(char *string, char separator) {
     /*
-    A function that takes a string and a char seperator and returns the part of the string after the separator.
+
+    A function that takes a string and a char separator and returns the part of the string after the separator.
     Example "hello world" with separator ' ' would return "world"
     
     
     Args:
-    *string: the string we want to split
+    *string : the string we want to split
     separator: the char we separate the string on
 
     Returns:
-    char *: the string after the separator
+    char * : the string after the separator
+
     */
 
     int index = 0;
@@ -181,17 +183,17 @@ char* split(char *string, char separator) {
 }
 
 char *get_user_input(char *message) {
-    /* 
-    function that displays a message and returns a string of the user's input
+    /*
+
+    Function that displays a message and returns a string of the user's input
 
     Args:
-    *string: the string we want to display when getting user input
+    *string : the string we want to display when getting user input
 
     Returns:
     char* : the string the user entered
     
     */
-
 
     static char user_input[MAX];
     user_input[0] = '\0'; // just clear it every time
