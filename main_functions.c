@@ -22,6 +22,7 @@ display_all() - displays all the cells in the array
 
 void main_display() {
     /*
+
     A function that displays the main menu
 
     Args:
@@ -29,6 +30,7 @@ void main_display() {
 
     Returns:
     n/a
+
     */
 
     printf("[2025] SUCEM S.L. Wifi Collector\n\n");
@@ -48,6 +50,7 @@ void main_display() {
 
 int quit() {
     /*
+
     Asks the user iif they want to quit - if they want to quit return true(1) or return false(0)
 
     Args:
@@ -55,6 +58,7 @@ int quit() {
 
     Returns:
     bool: integer representation of a bool representing if the user want to quit or stay in the program
+
     */
 
     char user_input[MAX];
@@ -72,15 +76,17 @@ int quit() {
 
 void collect(Cell *array, int *array_index) {
     /*
+
     A function that takes in the cells array and the current index and inserts cells, requested by the user, into the array at the next available cell.
     It gets the contents of these cells by reading from the specific file
 
     Args:
-    *array: a pointer to the cells array which we want to add more cells into
-    *array_index: a pointer to the current index
+    *array : a pointer to the cells array which we want to add more cells into
+    *array_index : a pointer to the current index
 
     Returns:
     n/a
+
     */
 
     for(;;) {
@@ -132,11 +138,12 @@ void collect(Cell *array, int *array_index) {
 
 void display(Cell *array) {
     /*
+
     A function that asks the user for the integer ID of the cell they want to display. If the cell is in the array it will print the contents. 
     If not displays nothing.
 
     Args:
-    *array - a pointer to the cells array
+    *array : a pointer to the cells array
 
     Returns:
     n/a
@@ -176,6 +183,7 @@ void display(Cell *array) {
 
 void display_all(Cell *array, int array_index) {
     /*
+    
     A function that displays all the cells currently in the array
 
     Args:
