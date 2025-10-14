@@ -70,8 +70,6 @@ int quit() {
     
 }
 
-
-
 void collect(Cell *array, int *array_index) {
     /*
     A function that takes in the cells array and the current index and inserts cells, requested by the user, into the array at the next available cell.
@@ -151,6 +149,8 @@ void display(Cell *array) {
         char *user_input = get_user_input("Indicate the number of the cell for which you want to know its information (1 - 21): ");
         int choice = atoi(user_input);
 
+        printf("\n");
+
         // using linear search to find the corresponding cell (if it exists) - since unordered cannot use binary search
         for(int i = 0; i < ARRAY_SIZE; i++) { // was struggling to get the size of the array using sizeof - can just use array size - both O(N) anyways
             Cell current_cell = array[i];
@@ -160,11 +160,15 @@ void display(Cell *array) {
 
         }
 
+        printf("\n");
+
         // ask the user if they want to quit or not
         strcpy(user_input, get_user_input("Do you want to print the information of another cell? [y/N]: "));
         if(tolower(user_input[0]) == 'n') {
             return;
         }
+
+        printf("\n");
 
     }
    

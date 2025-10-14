@@ -81,8 +81,6 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
             case 7:
                 char *quality = split(current_line, '='); // will return a string like 50/90
                 quality[strlen(quality)-1] = '\0'; // get rid of the newline character
-
-               
             
                 char first_num[3]; // need 3 for the null terminating char
                 char second_num[3];
@@ -147,6 +145,18 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
 }
 
 char* split(char *string, char separator) {
+    /*
+    A function that takes a string and a char seperator and returns the part of the string after the separator.
+    Example "hello world" with separator ' ' would return "world"
+    
+    
+    Args:
+    *string: the string we want to split
+    separator: the char we separate the string on
+
+    Returns:
+    char *: the string after the separator
+    */
 
     int index = 0;
     int set = 0;
@@ -164,7 +174,6 @@ char* split(char *string, char separator) {
             index ++;
         }
 
-
     }
     second_half[index] = '\0';
     return second_half;
@@ -172,7 +181,18 @@ char* split(char *string, char separator) {
 }
 
 char *get_user_input(char *message) {
-    /* function that displays a message and returns a string of the user's input*/
+    /* 
+    function that displays a message and returns a string of the user's input
+
+    Args:
+    *string: the string we want to display when getting user input
+
+    Returns:
+    char* : the string the user entered
+    
+    */
+
+
     static char user_input[MAX];
     user_input[0] = '\0'; // just clear it every time
     printf("%s", message);
