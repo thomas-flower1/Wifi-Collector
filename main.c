@@ -49,6 +49,7 @@ int main() {
             break;
 
             case 5:
+                delete_net(array, ARRAY_SIZE);
 
             break;
 

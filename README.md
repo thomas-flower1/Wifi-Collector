@@ -50,6 +50,5 @@ cell - contains the cell class and methods associated with it
 
 It can be compiled using 'make' and executed using './main' or alternatively using 'make run' to compile and run. 
 
-
 The project can also be seen on my GitHub: https://github.com/thomas-flower1/Wifi-Collector
 

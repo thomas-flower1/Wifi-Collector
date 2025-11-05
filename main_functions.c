@@ -197,4 +197,26 @@ void display_all(Cell *array, int array_index) {
         print_cell(&array[i]);
     }
 
+    printf("\n");
+
 }
+
+
+void delete_net(Cell *array, int size) {
+    char *user_input = get_user_input("Indicate the ESSID (use \"\"): ");
+    user_input[strlen(user_input)-1] = '\0';
+
+    // then we just linear search the array for a value
+    // given a pointer to the start of the array
+    for(int i = 0; i < size; i++) {
+
+        printf("current id: %s\n", array[i].ESSID);
+        if(strcmp(array[i].ESSID, user_input) == 0){
+            array[i] = NULL;
+        }
+    }
+
+
+
+}
+
