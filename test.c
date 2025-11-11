@@ -10,37 +10,83 @@ typedef struct person {
 } person;
 
 
-void remove_element(int *array, int index_to_remove, int length);
+void remove_from_array(int *array, int index, int *length);
+void append_to_array(int *array, int value, int *length);
 void print_array(int *array, int size);
+
 
 
 int main() {
 
-    // person *array = calloc(SIZE, sizeof(person));
-
+    int length = 0; // we will be updating this throughout the program
+    int *p_length = &length;
     int *array = calloc(SIZE, sizeof(int));
+    
+
     for(int i = 0; i < SIZE; i++) {
+        length += 1;
         array[i] = i;
     }
 
-  
-    remove_element(array, 2, 5 );
+    printf("The length of the array is: %d\n", length);
+    print_array(array, length);
+
+    printf("\n");
+
+    remove_from_array(array, 1, p_length);
+    printf("The length of the array is: %d\n", length);
+    print_array(array, length);
+    
+    printf("\n");
+    append_to_array(array, 1, p_length);
+    printf("The length of the array is: %d\n", length);
+    print_array(array, length);
+
+
+
+
+
+
+    
 
 
     return 0;
 }
 
-void remove_element(int *array, int index_to_remove, int length) { 
+void remove_from_array(int *array, int index, int *length) { 
 
-    print_array(array, length);
+    // pass an into pointer so that we can change the value of the length
 
-    for(int i = index_to_remove + 1; i < length; i++) {
+    // shifting all the elements down one, overring a value
+    for(int i = index + 1; i < *length; i++) {
         array[i-1] = array[i];
     }
-    printf("\n");
 
-    print_array(array, length);
+    *length -= 1;
 
+}
+
+
+void append_to_array(int *array, int value, int *length) {
+
+    // since we are passing in the length the index of the next value it the length
+
+
+    if(*length % 5 == 0) {
+
+        // we wanna allocate an extra 5 slots
+        array = realloc(array, *length + 5);
+
+        // then add the new element
+        array[*length] = value;
+
+    } else {
+        array[*length] = value;
+    }
+
+
+    *length += 1;
+    
 
 }
 
