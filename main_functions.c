@@ -5,6 +5,7 @@
 
 #include "main_functions.h"
 #include "helper_functions.h"
+#include "dynamic_arrays.h"
 
 
 /*
@@ -74,7 +75,7 @@ int quit() {
     
 }
 
-void collect(Cell *array, int *array_index) {
+void collect(Cell *array, int *length) {
     /*
 
     A function that takes in the cells array and the current index and inserts cells, requested by the user, into the array at the next available cell.
@@ -82,7 +83,7 @@ void collect(Cell *array, int *array_index) {
 
     Args:
     *array : a pointer to the cells array which we want to add more cells into
-    *array_index : a pointer to the current index
+    *length : a pointer thats the current length of the array
 
     Returns:
     n/a
@@ -110,12 +111,12 @@ void collect(Cell *array, int *array_index) {
             strcat(filename, ".txt");
 
             // extracting data from the file and insert into the array
-            int start_index = *array_index;
-            create_cells_from_file(filename, array, array_index);
+            int start_index = *length-1;
+            create_cells_from_file(filename, array, length);
             
             
             // then now we need to print and format these cells
-            for(int cell_index = start_index; cell_index < *array_index; cell_index++) {
+            for(int cell_index = start_index; cell_index < *length; cell_index++) {
                 printf("Network read from %s (added to position %d of the array)\n", filename, cell_index);
                 Cell cell = array[cell_index];
                 print_cell(&cell);
@@ -202,18 +203,40 @@ void display_all(Cell *array, int array_index) {
 }
 
 
-void delete_net(Cell *array, int size) {
+void delete_net(Cell *array, int *length) {
+    /*
+    Asks the user for the the ESSID that they want to remove - it then uses linear search to find and remove the cell if it exists
+    In doing so we resize the array also
+
+    Args:
+
+    Returns:
+
+
+    
+    */
+
+
     char *user_input = get_user_input("Indicate the ESSID (use \"\"): ");
     user_input[strlen(user_input)-1] = '\0';
 
+
+
     // then we just linear search the array for a value
     // given a pointer to the start of the array
-    for(int i = 0; i < size; i++) {
+    for(int i = 0; i < *length; i++) {
 
-        printf("current id: %s\n", array[i].ESSID);
-        if(strcmp(array[i].ESSID, user_input) == 0){
-            // array[i] = NULL;
-            // then need to just remove the value
+        // need to format the ESSID to have the speech marks
+        char first[MAX] = "\"";
+        char second[MAX] = "\"";
+
+        strcat(first, array[i].ESSID);
+        strcat(first, second);
+       
+        if(strcmp(first, user_input) == 0){
+            remove_from_array(array, i, length);
+            return;
+          
         }
     }
 

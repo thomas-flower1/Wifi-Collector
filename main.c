@@ -6,13 +6,15 @@
 #include "main_functions.h"
 #include "helper_functions.h"
 #include "cell.h"
+#include "dynamic_arrays.h"
 
 
 int main() {
+    Cell *array = malloc(SIZE *sizeof(Cell));
+    int length = 0;
+    int *p_length = &length;
 
-    Cell array[ARRAY_SIZE]; // the array that will hold all the cells
-    int index = 0; // the next available index we can use to insert a cell
-
+   
     // the main loop
     for(;;) {
 
@@ -22,7 +24,7 @@ int main() {
 
         // getting the user input
         char *user_input = get_user_input("Option: ");
-        int choice = atoi(user_input); // convert the input to a number
+        int choice = atoi(user_input); // convert the input to an int
 
         printf("\n");
         
@@ -40,7 +42,7 @@ int main() {
             break;
 
             case 2:
-                collect(array, &index);
+                collect(array, p_length);
 
             break;
 
@@ -49,7 +51,7 @@ int main() {
             break;
 
             case 5:
-                delete_net(array, ARRAY_SIZE);
+                delete_net(array, p_length);
 
             break;
 
@@ -68,12 +70,12 @@ int main() {
 
 
             case 9:
-                display(array);
+                // display(array);
             break;
 
 
             case 10:
-                display_all(array, index);
+                display_all(array, length);
             break;
 
 

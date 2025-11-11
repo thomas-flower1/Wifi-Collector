@@ -3,9 +3,8 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "cell.h"
+#include "dynamic_arrays.h"
 
-#define SIZE 5
 
 
 /*
@@ -17,52 +16,13 @@ Note that these functions only work with an array of cells
 */
 
 
-void remove_from_array(Cell *array, int index, int *length);
-void append_to_array(Cell *array, Cell value, int *length);
-void print_cell_array(Cell *array, int size);
-
-
-
-int main() {
-  
-
-    Cell *array = (Cell*) malloc(SIZE * sizeof(Cell));
-    int length = 0;
-    int *p_length = &length;
-  
-
-    // testing with an array of cells
-    for(int i = 0; i < 6; i++) {
-        Cell cell;
-        cell.id = i;
-
-        append_to_array(array, cell, p_length);
-    }
-
-    // checking the size of the array when adding all the elements - should be 6
-    printf("The length of the array is: %d\n", length);
-
-
-    // now checking the size of the array when removeing an element - should be 5
-    remove_from_array(array, 3, p_length);
-    printf("The length of the array is: %d\n", length);
-
-
-
-   
-    
-
-
-    return 0;
-}
-
 void remove_from_array(Cell *array, int index, int *length) { 
+    /*
+    
+    
+    */
 
-    // pass an into pointer so that we can change the value of the length
-
-    // shifting all the elements down one, overring a value
-
-    // should throw an error if the index is out of range
+    
     if(index < 0 || index >= *length) {
         exit(1);
     }

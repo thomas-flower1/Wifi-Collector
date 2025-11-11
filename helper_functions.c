@@ -5,8 +5,9 @@
 
 #include "helper_functions.h"
 #include "cell.h"
+#include "dynamic_arrays.h"
 
-void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
+void create_cells_from_file(char *filename, Cell *array, int *length) {
     /*
 
     A function that reads a cells from a file and creates cell objects. Once created it adds them to an array
@@ -130,10 +131,9 @@ void create_cells_from_file(char *filename, Cell *array, int *arr_index) {
 
         // if we have finished with the cell in the file
         if (line_number == 9) {
-            array[*arr_index] = current_cell; // add to the list
+            append_to_array(array, current_cell, length);
             current_cell = (Cell){0}; // reset the cell
             line_number = 1; // reset the cell line
-            (*arr_index)++; // increment the index of the arr of cells
 
         }  else {
             line_number ++;
