@@ -212,7 +212,8 @@ void delete_net(Cell *array, int size) {
 
         printf("current id: %s\n", array[i].ESSID);
         if(strcmp(array[i].ESSID, user_input) == 0){
-            array[i] = NULL;
+            // array[i] = NULL;
+            // then need to just remove the value
         }
     }
 
