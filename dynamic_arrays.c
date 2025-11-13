@@ -56,21 +56,15 @@ void append_to_array(Cell *array, Cell cell, int *length) {
     
     */
 
-    if(*length % 5 == 0) {
-
-        // we wanna allocate an extra 5 slots
-        array = realloc(array, (*length + 5) * sizeof(Cell));
-
-        // then add the new element
-        array[*length] = cell;
-
-    } else {
-        array[*length] = cell;
-    }
-
+    
+    
+    array[*length] = cell;
+    
 
     *length += 1;
-    
+
+
+  
 
 }
 

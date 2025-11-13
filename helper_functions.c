@@ -30,53 +30,53 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
         return;
     }
 
-    // then we want to read from the given file
-    Cell current_cell;
+
+
+    Cell *current_cell = &array[*length];
     char current_line[MAX]; // current line we are reading
     int line_number = 1; // will go from 1-9
 
-    // using this to keep track of what cells were just added and hence what we need to display to the console
-    int end_index = -1;
 
     while(fgets(current_line, MAX, rf) != NULL) {
+
      
         switch (line_number) {
             case 1:
                 // case when it is just the cell name, need to extract the number
                 char *cell_num = split(current_line, ' '); // should return the number
                 int i_cell_num = atoi(cell_num);
-                current_cell.id = i_cell_num;
+                current_cell->id = i_cell_num;
 
                 break;
 
             case 2:
                 char *address = split(current_line, ' ');
                 address[strlen(address)-1] = '\0'; // get rid of the newline character
-                strcpy(current_cell.address, address); 
+                strcpy(current_cell->address, address); 
                 break;
             
             case 3:
                 char *essid = split(current_line, '"');
                 essid[strlen(essid)-1] = '\0'; // get rid of the newline character
-                strcpy(current_cell.ESSID, essid);
+                strcpy(current_cell->ESSID, essid);
                 break;
             
             case 4:
                 char *mode = split(current_line, ':');
                 mode[strlen(mode)-1] = '\0'; // get rid of the newline character
-                current_cell.mode = string_to_mode(mode);
+                current_cell->mode = string_to_mode(mode);
                 break;
             
             case 5:
                 char *channel = split(current_line, ':');
                 int i_channel = atoi(channel);
-                current_cell.channel = i_channel;
+                current_cell->channel = i_channel;
                 break;
             
             case 6:
                 char *encryption_key = split(current_line, ':');
                 encryption_key[strlen(encryption_key) - 1] = '\0';
-                current_cell.encryption_key = string_to_encryption_key(encryption_key);
+                current_cell->encryption_key = string_to_encryption_key(encryption_key);
                 break;
             
             case 7:
@@ -97,8 +97,8 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
                 int first = atoi(first_num);
                 int second = atoi(second_num);
 
-                current_cell.quality.first = first;
-                current_cell.quality.second = second;
+                current_cell->quality.first = first;
+                current_cell->quality.second = second;
                 break;
             
             case 8:
@@ -109,7 +109,7 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
 
                 }
                 float freq = atof(f);
-                current_cell.frequency = freq;
+                current_cell->frequency = freq;
                 break;
             
             case 9:
@@ -123,7 +123,10 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
 
                 sig[3] = '\0';
                 int s = atoi(sig);
-                current_cell.signal_level = s;
+                current_cell->signal_level = s;
+                break;
+
+
             default:
                 break;
         }
@@ -131,11 +134,24 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
 
         // if we have finished with the cell in the file
         if (line_number == 9) {
-            append_to_array(array, current_cell, length);
-            current_cell = (Cell){0}; // reset the cell
+            append_to_array(array, *current_cell, length);
             line_number = 1; // reset the cell line
 
-        }  else {
+            // check here if we need to resize the array after each time we add to the array
+            if(*length % 5 == 0 && *length != 0) {
+
+                // we wanna allocate an extra 5 slots
+                array = realloc(array, (*length + 5 + 1) * sizeof(Cell));
+                for(int i = 0; i < 10; i++) {
+                    print_cell(&array[i]);
+                }
+
+
+            }
+
+            current_cell = &array[*length];
+
+        } else {
             line_number ++;
         }
 

@@ -10,7 +10,7 @@
 
 
 int main() {
-    Cell *array = malloc(SIZE *sizeof(Cell));
+    Cell *array = malloc(SIZE * sizeof(Cell));
     int length = 0;
     int *p_length = &length;
 

@@ -111,17 +111,21 @@ void collect(Cell *array, int *length) {
             strcat(filename, ".txt");
 
             // extracting data from the file and insert into the array
-            int start_index = *length-1;
+            int start_index = *length;
             create_cells_from_file(filename, array, length);
+
+        
             
-            
-            // then now we need to print and format these cells
+            //then now we need to print and format these cells
             for(int cell_index = start_index; cell_index < *length; cell_index++) {
                 printf("Network read from %s (added to position %d of the array)\n", filename, cell_index);
                 Cell cell = array[cell_index];
                 print_cell(&cell);
                 printf("\n");
             }
+
+
+
 
             // see if the user wants to add more cells
             strcpy(user_input, get_user_input("Do you want to add another access point? [y:N]: "));
@@ -141,7 +145,7 @@ void display(Cell *array) {
     /*
 
     A function that asks the user for the integer ID of the cell they want to display. If the cell is in the array it will print the contents. 
-    If not displays nothing.
+    The function uses linear search since the array is unsorted. If the cell is not found then we print an error message
 
     Args:
     *array : a pointer to the cells array
@@ -159,12 +163,22 @@ void display(Cell *array) {
 
         printf("\n");
 
+        int found = 0;
+
         // using linear search to find the corresponding cell (if it exists) - since unordered cannot use binary search
         for(int i = 0; i < ARRAY_SIZE; i++) { // was struggling to get the size of the array using sizeof - can just use array size - both O(N) anyways
             Cell current_cell = array[i];
             if (current_cell.id == choice) {
                 print_cell(&current_cell);
+                found = 1;
+                break;
             }
+
+        }
+
+        // if we did not find the cell we print a message to the user
+        if (found == 0) {
+            printf("Cell not found");
 
         }
 
