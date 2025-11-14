@@ -15,8 +15,8 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
 
     Args:
     filename : string name of the file to read from
-    array : an array that will hold the cells
-    arr_index : the next empty index in which we want to add the cell into
+    **array : a double pointer to the cells array
+    *arr_index : the next empty index in which we want to add the cell into
 
     Returns:
     n/a
@@ -31,8 +31,10 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
         return;
     }
 
-    Cell *p_array = *array; // a pointer to the a
+    Cell *p_array = *array; // a pointer to the array
     Cell *current_cell = &p_array[*length]; // a pointer to the current cell
+
+    print_cell(current_cell);
 
 
     char current_line[MAX]; // current line we are reading
@@ -40,8 +42,6 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
 
     while(fgets(current_line, MAX, rf) != NULL) {
        
-
-     
         switch (line_number) {
             case 1:
                 // case when it is just the cell name, need to extract the number
@@ -138,25 +138,24 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
         if (line_number == 9) {
 
             line_number = 1; // reset the cell line
+            *length += 1; // increment the length
 
-            *length += 1;
-
+            // whenever our array is a multiple of 5 we resize it 
             if(*length % 5 == 0 && *length != 0) {
                 printf("* * * Allocating another 5 positions in the dynamic array * * *\n");
 
-            
                // use the double pointer to redefine the array pointer in the main function
                 *array = realloc(*array, (*length + 5) * sizeof(Cell));
                 p_array = *array;
 
-
             } 
 
+            // printing the information about the cell we just inserted
             printf("Network read from %s (added to position %d of the array)\n", filename, *length-1);
             print_cell(current_cell);
             printf("\n");
             
-
+            // going to the next cell
             current_cell = &p_array[*length];
            
 
@@ -229,5 +228,39 @@ char *get_user_input(char *message) {
     fgets(user_input, MAX, stdin);
     return user_input;
 
+
+}
+
+
+void remove_from_array(Cell *array, int index, int *length) { 
+
+    // shifting all the elements down one, overring a value
+    for(int i = index + 1; i < *length; i++) {
+        array[i-1] = array[i];
+
+    }
+
+    clear_cell(&array[*length-1]);
+    *length -= 1;
+
+
+}
+
+void clear_cell(Cell *cell) {
+    /*
+    Given a cell will reset all it's values
+    
+    */
+    char empty_string[MAX] = "";
+
+    strcpy(cell->address, empty_string);
+    strcpy(cell->ESSID, empty_string);
+    cell->mode = 0;
+    cell->channel = 0;
+    cell->encryption_key = 0;
+    cell->quality.first = 0;
+    cell->quality.second = 0;
+    cell->frequency = 0;
+    cell->signal_level = 0;
 
 }

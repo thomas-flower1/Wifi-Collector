@@ -78,11 +78,12 @@ int quit() {
 void collect(Cell **array, int *length) {
     /*
 
-    A function that takes in the cells array and the current index and inserts cells, requested by the user, into the array at the next available cell.
-    It gets the contents of these cells by reading from the specific file
+    A function that takes in the  a double pointer of the cells array and the current index and inserts cells, requested by the user, into the array at the next available cell.
+    It gets the contents of these cells by reading from the specific file. THe use of the double pointer is to ensure that the global array is changed and not just a copy
+
 
     Args:
-    *array : a pointer to the cells array which we want to add more cells into
+    **array : a double pointer to the cells array which we want to add more cells into
     *length : a pointer thats the current length of the array
 
     Returns:
@@ -112,7 +113,6 @@ void collect(Cell **array, int *length) {
 
         
             create_cells_from_file(filename, array, length);
-
            
             // see if the user wants to add more cells
             strcpy(user_input, get_user_input("Do you want to add another access point? [y:N]: "));
@@ -158,14 +158,13 @@ void display(Cell *array) {
             if (current_cell.id == choice) {
                 print_cell(&current_cell);
                 found = 1;
-                break;
             }
 
         }
 
         // if we did not find the cell we print a message to the user
         if (found == 0) {
-            printf("Cell not found");
+            printf("Cell not found\n");
 
         }
 
@@ -237,6 +236,9 @@ void delete_net(Cell *array, int *length) {
         strcat(first, second);
        
         if(strcmp(first, user_input) == 0){
+
+            // use the remove function and also need to check how the array looks
+            remove_from_array(array, i, length);
            
             return;
           

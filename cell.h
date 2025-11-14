@@ -35,7 +35,7 @@ typedef struct {
     char ESSID[MAX];
     Mode mode;
     int channel;
-    Encryption_key encryption_key;  // could make an enum
+    Encryption_key encryption_key;  
     Quality quality;
     double frequency;
     int signal_level;
