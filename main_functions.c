@@ -110,24 +110,10 @@ void collect(Cell **array, int *length) {
             strcat(filename, user_number);
             strcat(filename, ".txt");
 
-            // extracting data from the file and insert into the array
-            int start_index = *length;
-
-            // TODO change this to a double pointer
+        
             create_cells_from_file(filename, array, length);
 
-        
-            
-            //then now we need to print and format these cells
-            // for(int cell_index = start_index; cell_index < *length; cell_index++) {
-            //     printf("Network read from %s (added to position %d of the array)\n", filename, cell_index);
-            //     Cell cell = array[cell_index];
-            //     print_cell(&cell);
-            //     printf("\n");
-            // }
-
-
-
+           
             // see if the user wants to add more cells
             strcpy(user_input, get_user_input("Do you want to add another access point? [y:N]: "));
             if(tolower(user_input[0]) == 'n') {

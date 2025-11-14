@@ -71,7 +71,7 @@ int main() {
 
 
             case 9:
-                // display(array);
+                display(array);
             break;
 
 

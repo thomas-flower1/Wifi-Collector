@@ -136,19 +136,13 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
 
         // if we have finished with the cell in the file
         if (line_number == 9) {
+
             line_number = 1; // reset the cell line
 
             *length += 1;
-            // check here if we need to resize the array after each time we add to the array
-            print_cell(current_cell);
-
-         
-
-      
-           
 
             if(*length % 5 == 0 && *length != 0) {
-                printf("Making more space\n");
+                printf("* * * Allocating another 5 positions in the dynamic array * * *\n");
 
             
                // use the double pointer to redefine the array pointer in the main function
@@ -158,9 +152,12 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
 
             } 
 
-            current_cell = &p_array[*length];
-             
+            printf("Network read from %s (added to position %d of the array)\n", filename, *length-1);
+            print_cell(current_cell);
+            printf("\n");
+            
 
+            current_cell = &p_array[*length];
            
 
         } else {
