@@ -36,7 +36,7 @@ int main() {
                 // quit early
                 if (val == 1) {
                     free(array);
-                    printf("Goodbye !\n");
+                    printf("\nGoodbye !\n");
 
                     return 0;
                 }
