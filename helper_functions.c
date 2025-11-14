@@ -6,10 +6,25 @@
 #include "helper_functions.h"
 #include "cell.h"
 
+/*
+
+A file that contains functions that help the main functions of the program. This includes string parsing, reading from files and more.
+
+Functions include: 
+
+main_display() - prints the main message with all the options to the terminal
+split() - splits a string into two strings and returns the second half - it splits on the first instance of the character
+get_user_input() - prompts the user to type something and returns a string representation of it
+create_cell_from_file() - reads the data from a file and assigns the values to the Cell array. - also capable of resizing the array once full (dynamic)
+remove_from_array() - removes the element from the cell given the index - it move the other entries to the left by 1
+clear_cell() - given a pointer to a cell, resets all the values
+
+*/
+
 void main_display() {
     /*
 
-    A function that displays the main menu
+    A function that displays the main menu to the terminal
 
     Args:
     n/a
@@ -33,6 +48,65 @@ void main_display() {
 
 }
 
+char* split(char *string, char separator) {
+    /*
+
+    A function that takes a string and a char separator and returns the part of the string after the separator.
+    Example "hello world" with separator ' ' would return "world"
+    
+    
+    Args:
+    char* string : the string we want to split
+    char separator: the char we separate the string on
+
+    Returns:
+    char * : the string after the separator
+
+    */
+
+    int index = 0;
+    int set = 0;
+    
+    static char second_half[MAX];
+    second_half[0] = '\0';
+    
+    for(int i = 0; i < strlen(string); i++) {
+       
+      if(string[i] == separator) {
+            set = 1; // true
+        
+        } else if (set) {
+            second_half[index] = string[i];
+            index ++;
+        }
+
+    }
+    second_half[index] = '\0';
+    return second_half;
+
+}
+
+char* get_user_input(char *message) {
+    /*
+
+    Function that displays a message and returns a string of the user's input
+
+    Args:
+    char* string : the string we want to display when getting user input
+
+    Returns:
+    char* : the string the user entered
+    
+    */
+
+    static char user_input[MAX];
+    user_input[0] = '\0'; // just clear it every time
+    printf("%s", message);
+    fgets(user_input, MAX, stdin);
+    return user_input;
+
+
+}
 
 void create_cells_from_file(char *filename, Cell **array, int *length) {
     /*
@@ -195,67 +269,6 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
         
 }
 
-char* split(char *string, char separator) {
-    /*
-
-    A function that takes a string and a char separator and returns the part of the string after the separator.
-    Example "hello world" with separator ' ' would return "world"
-    
-    
-    Args:
-    *string : the string we want to split
-    separator: the char we separate the string on
-
-    Returns:
-    char * : the string after the separator
-
-    */
-
-    int index = 0;
-    int set = 0;
-    
-    static char second_half[MAX];
-    second_half[0] = '\0';
-    
-    for(int i = 0; i < strlen(string); i++) {
-       
-      if(string[i] == separator) {
-            set = 1; // true
-        
-        } else if (set) {
-            second_half[index] = string[i];
-            index ++;
-        }
-
-    }
-    second_half[index] = '\0';
-    return second_half;
-
-}
-
-char *get_user_input(char *message) {
-    /*
-
-    Function that displays a message and returns a string of the user's input
-
-    Args:
-    *string : the string we want to display when getting user input
-
-    Returns:
-    char* : the string the user entered
-    
-    */
-
-    static char user_input[MAX];
-    user_input[0] = '\0'; // just clear it every time
-    printf("%s", message);
-    fgets(user_input, MAX, stdin);
-    return user_input;
-
-
-}
-
-
 void remove_from_array(Cell *array, int index, int *length) { 
 
     // shifting all the elements down one, overring a value
@@ -263,7 +276,7 @@ void remove_from_array(Cell *array, int index, int *length) {
         array[i-1] = array[i];
 
     }
-
+    // setting the lastc cell into the array back to the original array
     clear_cell(&array[*length-1]);
     *length -= 1;
 
@@ -272,7 +285,10 @@ void remove_from_array(Cell *array, int index, int *length) {
 
 void clear_cell(Cell *cell) {
     /*
-    Given a cell will reset all it's values
+
+    Given a cell will reset all it's values to the default
+
+    Cell *cell : a pointer to an cell in the Cells array
     
     */
     char empty_string[MAX] = "";
