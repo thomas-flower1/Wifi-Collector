@@ -6,7 +6,8 @@
 #include "main_functions.h"
 #include "helper_functions.h"
 #include "cell.h"
-#include "dynamic_arrays.h"
+
+#define SIZE 5
 
 
 int main() {
@@ -42,7 +43,7 @@ int main() {
             break;
 
             case 2:
-                collect(array, p_length);
+                collect(&array, p_length);
 
             break;
 

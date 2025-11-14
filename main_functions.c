@@ -5,7 +5,7 @@
 
 #include "main_functions.h"
 #include "helper_functions.h"
-#include "dynamic_arrays.h"
+
 
 
 /*
@@ -75,7 +75,7 @@ int quit() {
     
 }
 
-void collect(Cell *array, int *length) {
+void collect(Cell **array, int *length) {
     /*
 
     A function that takes in the cells array and the current index and inserts cells, requested by the user, into the array at the next available cell.
@@ -112,18 +112,19 @@ void collect(Cell *array, int *length) {
 
             // extracting data from the file and insert into the array
             int start_index = *length;
+
+            // TODO change this to a double pointer
             create_cells_from_file(filename, array, length);
 
         
             
             //then now we need to print and format these cells
-            for(int cell_index = start_index; cell_index < *length; cell_index++) {
-                printf("Network read from %s (added to position %d of the array)\n", filename, cell_index);
-                Cell cell = array[cell_index];
-                print_cell(&cell);
-                printf("\n");
-            }
-
+            // for(int cell_index = start_index; cell_index < *length; cell_index++) {
+            //     printf("Network read from %s (added to position %d of the array)\n", filename, cell_index);
+            //     Cell cell = array[cell_index];
+            //     print_cell(&cell);
+            //     printf("\n");
+            // }
 
 
 
@@ -231,6 +232,8 @@ void delete_net(Cell *array, int *length) {
     */
 
 
+    // need to fixxxxxx and have the remove from array functions
+
     char *user_input = get_user_input("Indicate the ESSID (use \"\"): ");
     user_input[strlen(user_input)-1] = '\0';
 
@@ -248,7 +251,7 @@ void delete_net(Cell *array, int *length) {
         strcat(first, second);
        
         if(strcmp(first, user_input) == 0){
-            remove_from_array(array, i, length);
+           
             return;
           
         }

@@ -5,12 +5,13 @@
 
 #include "helper_functions.h"
 #include "cell.h"
-#include "dynamic_arrays.h"
 
-void create_cells_from_file(char *filename, Cell *array, int *length) {
+
+void create_cells_from_file(char *filename, Cell **array, int *length) {
     /*
 
-    A function that reads a cells from a file and creates cell objects. Once created it adds them to an array
+    A function that reads a cells from a file and allocates the values to a predefined empty array of cells.
+    The use of a double pointer is to allow us to change the array pointer and not a copy of the array pointer
 
     Args:
     filename : string name of the file to read from
@@ -30,14 +31,15 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
         return;
     }
 
+    Cell *p_array = *array; // a pointer to the a
+    Cell *current_cell = &p_array[*length]; // a pointer to the current cell
 
 
-    Cell *current_cell = &array[*length];
     char current_line[MAX]; // current line we are reading
     int line_number = 1; // will go from 1-9
 
-
     while(fgets(current_line, MAX, rf) != NULL) {
+       
 
      
         switch (line_number) {
@@ -134,22 +136,32 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
 
         // if we have finished with the cell in the file
         if (line_number == 9) {
-            append_to_array(array, *current_cell, length);
             line_number = 1; // reset the cell line
 
+            *length += 1;
             // check here if we need to resize the array after each time we add to the array
+            print_cell(current_cell);
+
+         
+
+      
+           
+
             if(*length % 5 == 0 && *length != 0) {
+                printf("Making more space\n");
 
-                // we wanna allocate an extra 5 slots
-                array = realloc(array, (*length + 5 + 1) * sizeof(Cell));
-                for(int i = 0; i < 10; i++) {
-                    print_cell(&array[i]);
-                }
+            
+               // use the double pointer to redefine the array pointer in the main function
+                *array = realloc(*array, (*length + 5) * sizeof(Cell));
+                p_array = *array;
 
 
-            }
+            } 
 
-            current_cell = &array[*length];
+            current_cell = &p_array[*length];
+             
+
+           
 
         } else {
             line_number ++;
@@ -158,6 +170,9 @@ void create_cells_from_file(char *filename, Cell *array, int *length) {
 
     }
         fclose(rf);
+
+
+        
 }
 
 char* split(char *string, char separator) {
