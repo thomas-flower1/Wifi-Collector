@@ -9,56 +9,29 @@
 
 
 /*
+
 File that contains all the main functions for the Wifi Collector lab project
 
-For assignment 1 this includes:
-main_display() - a function that prints the main menu message
-quit() - a function that gets user input and asks if they want to quit the program
-collect() - a function that gets uer input and adds the specified cell into the array by reading the cells from a file
+Assignment 2:
+quit() - a function that prompts the user to quit the program - note that the dynamic memory is freed here
+collect() - a function that gets the user input, reads from that line and assigns values in the array read from the file
+delete_net() - a function that deletes a network with a matching ESSID by moving the entries up and clearing the last cell
 display() - a function that, given user input, displays the cells with the matching ID
 display_all() - displays all the cells in the array
 
 */
 
 
-void main_display() {
-    /*
-
-    A function that displays the main menu
-
-    Args:
-    n/a
-
-    Returns:
-    n/a
-
-    */
-
-    printf("[2025] SUCEM S.L. Wifi Collector\n\n");
-    printf("[1] wificollector_quit\n");
-    printf("[2] wificollector_collect\n");
-    printf("[3] wificollector_show_data_one_network\n");
-    printf("[4] wificollector_select_best\n");
-    printf("[5] wificollector_delete_net\n");
-    printf("[6] wificollector_sort\n");
-    printf("[7] wificollector_export\n");
-    printf("[8] wificollector_import\n");
-    printf("[9] wificollector_display\n");
-    printf("[10] wificollector_display_all\n\n");
-
-}
-
-
 int quit() {
     /*
 
-    Asks the user iif they want to quit - if they want to quit return true(1) or return false(0)
+    Asks the user if they want to quit - if they want to quit return true(1) or return false(0)
 
     Args:
     n/a
 
     Returns:
-    bool: integer representation of a bool representing if the user want to quit or stay in the program
+    int : integer representation of a bool representing if the user want to quit or stay in the program
 
     */
 
@@ -83,8 +56,8 @@ void collect(Cell **array, int *length) {
 
 
     Args:
-    **array : a double pointer to the cells array which we want to add more cells into
-    *length : a pointer thats the current length of the array
+    Cell **array : a double pointer to the cells array which we want to add more cells into
+    int *length : a pointer thats the current length of the array
 
     Returns:
     n/a
@@ -128,6 +101,53 @@ void collect(Cell **array, int *length) {
 
 }
 
+void delete_net(Cell *array, int *length) {
+    /*
+
+    Asks the user for the the ESSID that they want to remove - it then uses linear search to find and remove the cell if it exists
+    In doing so we resize the array also
+
+    Args:
+    Cell *array : a pointer to the cell array
+    int *length : an pointer to the int size of the array
+
+    Returns:
+    n/a
+    
+    */
+    
+    // getting the user input
+    char *user_input = get_user_input("Indicate the ESSID (use \"\"): ");
+    user_input[strlen(user_input)-1] = '\0';
+
+
+    // then we just linear search the array for a value
+    for(int i = 0; i < *length; i++) {
+
+        // need to format the ESSID to have the speech marks
+        char first[MAX] = "\"";
+        char second[MAX] = "\"";
+
+        // format the string
+        strcat(first, array[i].ESSID);
+        strcat(first, second);
+       
+        if(strcmp(first, user_input) == 0){
+
+            // use the remove function and also need to check how the array looks
+            remove_from_array(array, i, length);
+            printf("Found ESSID %s at position %d... deleting\n", first, i);
+            
+        
+        }
+    }
+
+    printf("\n");
+
+
+
+}
+
 void display(Cell *array) {
     /*
 
@@ -135,7 +155,7 @@ void display(Cell *array) {
     The function uses linear search since the array is unsorted. If the cell is not found then we print an error message
 
     Args:
-    *array : a pointer to the cells array
+    Cell *array : a pointer to the cells array
 
     Returns:
     n/a
@@ -155,9 +175,10 @@ void display(Cell *array) {
         // using linear search to find the corresponding cell (if it exists) - since unordered cannot use binary search
         for(int i = 0; i < ARRAY_SIZE; i++) { // was struggling to get the size of the array using sizeof - can just use array size - both O(N) anyways
             Cell current_cell = array[i];
+
             if (current_cell.id == choice) {
                 print_cell(&current_cell);
-                found = 1;
+                found = 1; // marking the cell as found
             }
 
         }
@@ -182,70 +203,25 @@ void display(Cell *array) {
    
 }
 
-void display_all(Cell *array, int array_index) {
+void display_all(Cell *array, int length) {
     /*
     
-    A function that displays all the cells currently in the array
+    A function that displays all the cells currently in the array and prints out a formatted version of them
 
     Args:
-    n/a
+    Cell *array : a pointer to the array of cells
+    int length : the size of the array
+
 
     Returns:
     n/a
     */
 
-    for(int i = 0; i < array_index; i++) {
+    for(int i = 0; i < length; i++) {
         print_cell(&array[i]);
     }
 
     printf("\n");
-
-}
-
-
-void delete_net(Cell *array, int *length) {
-    /*
-    Asks the user for the the ESSID that they want to remove - it then uses linear search to find and remove the cell if it exists
-    In doing so we resize the array also
-
-    Args:
-
-    Returns:
-
-
-    
-    */
-
-
-    // need to fixxxxxx and have the remove from array functions
-
-    char *user_input = get_user_input("Indicate the ESSID (use \"\"): ");
-    user_input[strlen(user_input)-1] = '\0';
-
-
-
-    // then we just linear search the array for a value
-    // given a pointer to the start of the array
-    for(int i = 0; i < *length; i++) {
-
-        // need to format the ESSID to have the speech marks
-        char first[MAX] = "\"";
-        char second[MAX] = "\"";
-
-        strcat(first, array[i].ESSID);
-        strcat(first, second);
-       
-        if(strcmp(first, user_input) == 0){
-
-            // use the remove function and also need to check how the array looks
-            remove_from_array(array, i, length);
-           
-            return;
-          
-        }
-    }
-
-
 
 }
 

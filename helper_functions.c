@@ -6,6 +6,33 @@
 #include "helper_functions.h"
 #include "cell.h"
 
+void main_display() {
+    /*
+
+    A function that displays the main menu
+
+    Args:
+    n/a
+
+    Returns:
+    n/a
+
+    */
+
+    printf("[2025] SUCEM S.L. Wifi Collector\n\n");
+    printf("[1] wificollector_quit\n");
+    printf("[2] wificollector_collect\n");
+    printf("[3] wificollector_show_data_one_network\n");
+    printf("[4] wificollector_select_best\n");
+    printf("[5] wificollector_delete_net\n");
+    printf("[6] wificollector_sort\n");
+    printf("[7] wificollector_export\n");
+    printf("[8] wificollector_import\n");
+    printf("[9] wificollector_display\n");
+    printf("[10] wificollector_display_all\n\n");
+
+}
+
 
 void create_cells_from_file(char *filename, Cell **array, int *length) {
     /*
@@ -33,9 +60,6 @@ void create_cells_from_file(char *filename, Cell **array, int *length) {
 
     Cell *p_array = *array; // a pointer to the array
     Cell *current_cell = &p_array[*length]; // a pointer to the current cell
-
-    print_cell(current_cell);
-
 
     char current_line[MAX]; // current line we are reading
     int line_number = 1; // will go from 1-9

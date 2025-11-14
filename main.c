@@ -35,11 +35,11 @@ int main() {
 
                 // quit early
                 if (val == 1) {
+                    free(array);
                     printf("Goodbye !\n");
 
                     return 0;
                 }
-            
             break;
 
             case 2:

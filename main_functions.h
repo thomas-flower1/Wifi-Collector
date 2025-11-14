@@ -5,10 +5,9 @@
 #include "cell.h"
 
 int quit();
-void collect();
-void main_display();
-void display_all(Cell *array, int array_index);
-void display(Cell *array);
+void collect(Cell **array, int *length);
 void delete_net(Cell *array, int *length);
+void display(Cell *array);
+void display_all(Cell *array, int length);
 
 #endif
